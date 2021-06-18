@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
 import duco_api
 from os import system
 from time import sleep
-from termcolor import colored
-from threading import Thread
 
-green       = 'green'
-red         = 'red'
 timerAmount = 0
 
 def figlet(text):
@@ -35,5 +32,6 @@ while True:
         figlet(text="'Price: $'"+str(price))
         figlet(text="'Money: $"+str(value)+"'")
     except Exception as e:
-        #print(e)
+        if '--debug' in sys.argv:
+            print(e)
         pass
