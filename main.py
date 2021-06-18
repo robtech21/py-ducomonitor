@@ -5,8 +5,6 @@ import duco_api
 from os import system
 from time import sleep
 
-timerAmount = 0
-
 def figlet(text):
     system('figlet -w 999 '+str(text))
 
