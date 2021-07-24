@@ -5,8 +5,16 @@ import duco_api
 from os import system
 from time import sleep
 
+debug = False
+delay = False
+
+if '--debug' in sys.argv:
+    debug = True
+if '--delay' in sys.argv:
+    delay = True
+
 def figlet(text):
-    system('figlet -w 999 '+str(text))
+    system('figlet -f big.flf -w 999 '+str(text))
 
 def clr():
     system('clear')
@@ -17,19 +25,28 @@ passwd  = input('pass> ')
 clr()
 while True:
     try:
-        api_connection = duco_api.api_actions()
+        if debug:
+            print("Connecting")
+        api_connection = duco_api.Wallet()
+        if debug:
+            print("Logging in")
         api_connection.login(username=str(user), password=str(passwd))
-
-        price = duco_api.get_duco_price()
-        bal   = api_connection.balance()
+        price = api_connection.get_duco_price()
+        bal   = api_connection.get_balance()
         value = float(bal) * float(price)
         sleep(0.5)
         clr()
         figlet(text="'User:  '"+str(user))
+        if delay:
+            sleep(0.5)
         figlet(text="'Duco:  '"+str(bal))
+        if delay:
+            sleep(0.5)
         figlet(text="'Price: $'"+str(price))
+        if delay:
+            sleep(0.5)
         figlet(text="'Money: $"+str(value)+"'")
     except Exception as e:
-        if '--debug' in sys.argv:
-            print(e)
+        if debug:
+            print("Failed: "+str(e))
         pass
